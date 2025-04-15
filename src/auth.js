@@ -7,7 +7,7 @@ export const fetchUserProfile = async () => {
     return res.data // returns user object
   } catch (error) {
     console.error('Error fetching user profile:', error)
-    return null // not logged in or invalid token
+    return null
   }
 }
 
