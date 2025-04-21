@@ -1,7 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom'
+import {
+  Navbar as BootstrapNavbar,
+  Container,
+  Nav,
+  Button,
+} from 'react-bootstrap'
 import { logoutUser } from '../auth'
 import { useAuth } from '../context/AuthContext'
-import './Navbar.css'
 
 function Navbar() {
   const { user, loading, logout } = useAuth()
@@ -18,34 +23,45 @@ function Navbar() {
   }
 
   if (loading) {
-    return <nav className='navbar'>Loading...</nav>
+    return (
+      <BootstrapNavbar bg='light' expand='lg' className='mb-4'>
+        <Container>
+          <BootstrapNavbar.Brand>Loading...</BootstrapNavbar.Brand>
+        </Container>
+      </BootstrapNavbar>
+    )
   }
 
   return (
-    <nav className='navbar'>
-      <div className='nav-brand'>
-        <Link to='/'>Home</Link>
-      </div>
-      <div className='nav-links'>
-        {!user ? (
-          <>
-            <Link to='/login' className='nav-link'>
-              Login
-            </Link>
-            <Link to='/register' className='nav-link'>
-              Register
-            </Link>
-          </>
-        ) : (
-          <div className='user-section'>
-            <span className='welcome-text'>Welcome, {user.username}</span>
-            <button onClick={handleLogout} className='logout-btn'>
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
-    </nav>
+    <BootstrapNavbar bg='light' expand='lg' className='mb-4'>
+      <Container>
+        <BootstrapNavbar.Brand as={Link} to='/'>
+          Home
+        </BootstrapNavbar.Brand>
+        <BootstrapNavbar.Toggle aria-controls='basic-navbar-nav' />
+        <BootstrapNavbar.Collapse id='basic-navbar-nav'>
+          <Nav className='ms-auto'>
+            {!user ? (
+              <>
+                <Nav.Link as={Link} to='/login'>
+                  Login
+                </Nav.Link>
+                <Nav.Link as={Link} to='/register'>
+                  Register
+                </Nav.Link>
+              </>
+            ) : (
+              <div className='d-flex align-items-center'>
+                <span className='me-3'>Welcome, {user.username}</span>
+                <Button variant='danger' onClick={handleLogout}>
+                  Logout
+                </Button>
+              </div>
+            )}
+          </Nav>
+        </BootstrapNavbar.Collapse>
+      </Container>
+    </BootstrapNavbar>
   )
 }
 
